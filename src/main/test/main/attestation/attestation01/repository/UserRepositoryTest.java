@@ -35,17 +35,17 @@ class UserRepositoryTest {
 
     @Test
     void findById_success() {
-        User foundUser = userRepository.findById("f5a8a3cb-4ac9-4b3b-8a65-c424e129b9d2");
-        Assertions.assertEquals("f5a8a3cb-4ac9-4b3b-8a65-c424e129b9d2", foundUser.getId());
+        User foundUser = userRepository.findById("f5a8a3cb-4ac9");
+        Assertions.assertEquals("f5a8a3cb-4ac9", foundUser.getId());
     }
 
     @Test
-    void createUser_duplicateId_throwsException() {
-        User user1 = new User("f5a8a3cb-4ac9-4b3b-8a65-c424e129b9d2|2024-12-25T19:10:11.556|noisescw32|123asd|123asd|Жижков|Олег|Павлович|24|false");
-        User user2 = new User("f5a8a3cb-4ac9-4b3b-8a65-c424e129b9d2|2023-12-25T19:10:11.556|noisemc_99|789ghs|789ghs|Крылов|Виктор|Павлович|25|true");
+    void createUser_duplicateId_throwsException() throws IOException {
+        User user1 = new User("f5a8a3cb-4ac9|2024-12-25T19:10:11.556|noisescw32|123asd|123asd|Жижков|Олег|Павлович|24|false");
+        User user2 = new User("f5a8a3cb-4ac9|2023-12-25T19:10:11.556|noisemc_99|789ghs|789ghs|Крылов|Виктор|Павлович|25|true");
         userRepository.create(user1);
-        Exception exception = assertThrows(RuntimeException.class, () -> userRepository.create(user2));
-        Assertions.assertTrue(exception.getMessage().contains("Ошибка при создании пользователя"));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> userRepository.create(user2));
+        Assertions.assertTrue(exception.getMessage().contains("Пользователь с таким ID уже существует"));
     }
 
     @Test

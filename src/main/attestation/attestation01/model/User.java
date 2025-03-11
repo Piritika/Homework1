@@ -108,7 +108,7 @@ public class User {
 
         this.id = elements[0];
 
-        if (elements[1].isEmpty()) {
+        if (elements[1].isBlank()) {
             this.date = LocalDateTime.now();
         } else {
             this.date = LocalDateTime.parse(elements[1]);

@@ -21,18 +21,32 @@ public class UserRepositoryFileImpl implements UserRepository {
 
 
     @Override
-    public void create(User user) throws RuntimeException {
-        List<User> users = findAll();
-        try {
-            if (users.stream().anyMatch(existingUser -> existingUser.getId().equals(user.getId()))) {
-                throw new RuntimeException("Пользователь с таким ID уже существует");
+    public void create(User user) throws RuntimeException, IOException {
+        boolean fileIsEmpty = true;
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                fileIsEmpty = false;
+                User existingUser = new User(line);
+                if (existingUser.getId().equals(user.getId())) {
+                    throw new IllegalArgumentException("Пользователь с таким ID уже существует");
+                }
             }
-        users.add(user);
-        saveAll(users);
-        appendUserToFile(user);
-        System.out.println("Пользователь " + user.getFirstName() + " успешно создан.");
-    } catch (Exception e) {
-            throw new RuntimeException ("Ошибка создания пользователя");
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка при чтении файла", e);
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, true))) {
+            if (!fileIsEmpty) {
+                writer.newLine();
+            }
+            writer.write(formatUser(user));
+            System.out.println("Пользователь успешно создан.");
+        } catch (IOException e) {
+            throw new RuntimeException("Ошибка записи в файл", e);
         }
 
     }
@@ -78,6 +92,7 @@ public class UserRepositoryFileImpl implements UserRepository {
                 users.remove(existingUser.get());
                 users.add(user);
                 saveAll(users);
+                System.out.println("Обновление пользователя успешно.");
             } else {
                 throw new NoSuchElementException("Пользователь с таким ID не найден");
             }

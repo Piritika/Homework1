@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface UserRepository {
 
-    void create(User user);
+    void create(User user) throws IOException;
 
     User findById(String id);
 
