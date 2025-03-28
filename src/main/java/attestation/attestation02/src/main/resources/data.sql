@@ -1,0 +1,32 @@
+insert into users values (1, 'Олег Столкин');
+insert into users values (2, 'Андрей Носков');
+insert into users values (3, 'Алексей Раев');
+insert into users values (4, 'Павел Жижков');
+insert into users values (5, 'Ян Градов');
+insert into users values (6, 'Федор Достоевский');
+insert into users values (7, 'Александр Пушкин');
+insert into users values (8, 'Анна Иванова');
+insert into users values (9, 'Алиса Котова');
+insert into users values (10, 'Марина Цветаева');
+
+insert into product values(1, 'Молоко', 70, 100);
+insert into product values(2, 'Хлеб', 50, 200);
+insert into product values(3, 'Картофель', 70, 100);
+insert into product values(4, 'Говядина', 700, 50);
+insert into product values(5, 'Куриное филе', 500, 70);
+insert into product values(6, 'Огурцы', 100, 80);
+insert into product values(7, 'Помидоры', 100, 70);
+insert into product values(8, 'Макароны', 70, 100);
+insert into product values(9, 'Шоколад', 70, 200);
+insert into product values(10, 'Лук', 70, 100);
+
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (1, 3, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (2, 1, '2025-02-25', 1);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (3, 2, '2025-02-24', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (4, 10, '2025-02-22', 1);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (5, 5, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (6, 7, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (7, 8, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (8, 4, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (9, 9, '2025-02-23', 2);
+insert into orders (fk_product_id, user_id, date, count_of_orders) values (10, 6, '2025-02-23', 2);
