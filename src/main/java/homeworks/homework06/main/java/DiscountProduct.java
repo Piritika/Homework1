@@ -2,37 +2,35 @@ import java.time.LocalDate;
 
 public class DiscountProduct extends Product {
     private int discountPercent;
-    private LocalDate discountUntil;
+    private LocalDate validUntil;
 
-    public DiscountProduct(String name, int originalCost, int discountPercent, LocalDate discountUntil) {
-        super(name, originalCost);
-        if (discountPercent < 0 || discountPercent > 100)
-            throw new IllegalArgumentException("Скидка должна быть от 0 до 100%");
-        if (discountUntil == null)
-            throw new IllegalArgumentException("Дата окончания скидки не может быть null");
+    public DiscountProduct(String name, int cost, int discountPercent, LocalDate validUntil) {
+        super(name, cost);
+        if (discountPercent < 0 || discountPercent > 100) {
+            throw new IllegalArgumentException("Недопустимая скидка: " + discountPercent);
+        }
         this.discountPercent = discountPercent;
-        this.discountUntil = discountUntil;
+        this.validUntil = validUntil;
     }
 
     @Override
     public int getCost() {
-        if (LocalDate.now().isBefore(discountUntil)) {
-            return super.getCost() * (100 - discountPercent) / 100;
-        } else {
-            return super.getCost(); // скидка не действует
+        if (LocalDate.now().isAfter(validUntil)) {
+            return super.getCost(); // скидка истекла
         }
-    }
-
-    public LocalDate getDiscountUntil() {
-        return discountUntil;
+        return super.getCost() * (100 - discountPercent) / 100;
     }
 
     public int getDiscountPercent() {
         return discountPercent;
     }
 
+    public LocalDate getValidUntil() {
+        return validUntil;
+    }
+
     @Override
     public String toString() {
-        return getName() + " (со скидкой " + discountPercent + "% до " + discountUntil + ", цена сейчас: " + getCost() + ")";
+        return super.getName() + " (" + getCost() + "₽ со скидкой " + discountPercent + "% до " + validUntil + ")";
     }
 }

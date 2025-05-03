@@ -5,7 +5,7 @@ import java.util.Objects;
 public class Person {
     private String name;
     private int money;
-    private List<Product> bag;
+    private List<Product> bag = new ArrayList<>();
 
     public Person(String name, int money) {
         if (name == null || name.trim().isEmpty()) {
@@ -16,7 +16,6 @@ public class Person {
         }
         this.name = name;
         this.money = money;
-        this.bag = new ArrayList<>();
     }
 
     public String getName() {
@@ -27,43 +26,23 @@ public class Person {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
     public List<Product> getBag() {
-        return new ArrayList<>(bag);
+        return bag;
     }
 
-    public void addProduct(Product product) {
-        bag.add(product);
+    public boolean canAfford(Product product) {
+        return money >= product.getCost();
     }
 
-    @Override
-    public String toString() {
-        if (bag.isEmpty()) {
-            return name + " — Ничего не куплено";
-        } else {
-            StringBuilder sb = new StringBuilder(name + " купил: ");
-            for (Product p : bag) {
-                sb.append(p.getName()).append(", ");
-            }
-            return sb.substring(0, sb.length() - 2);
+    public void buyProduct(Product product) {
+        if (canAfford(product)) {
+            money -= product.getCost();
+            bag.add(product);
         }
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Person)) return false;
-        Person person = (Person) o;
-        return money == person.money &&
-                name.equals(person.name) &&
-                bag.equals(person.bag);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, money, bag);
+    public String toString() {
+        return name + " (" + money + "₽)";
     }
 }
