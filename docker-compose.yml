@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  attestation03:
+    image: postgres:15.2
+    environment:
+      - POSTGRES_DB=flower-shop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
